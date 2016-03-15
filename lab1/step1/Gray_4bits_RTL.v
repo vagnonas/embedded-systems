@@ -1,0 +1,59 @@
+ /*
+ -----------------------------------------------------------------------------
+ -- File           : Gray_4bits_RTL.v
+ -----------------------------------------------------------------------------
+ -- Description     : Verilog code for the 4-bit Gray with asynchronous reset
+ -- 4 bit gray code :
+  --  bin     hex
+  --  0000    0
+  --  0001    1
+  --  0011    3
+  --  0010    2
+  --  0110    6
+  --  0111    7
+  --  0101    5
+  --  0100    4
+  --  1100    C
+  --  1101    D
+  --  1111    F
+  --  1110    E
+  --  1010    A
+  --  1011    B
+  --  1001    9
+  --  1000    8
+ -- --------------------------------------------------------------------------
+ */ 
+
+module gray_4bits(clk, clk_en, rst, gray_out);
+	input clk, clk_en, rst;
+	output wire [3:0] gray_out;
+	reg [3:0] state;
+
+	always @(posedge clk or posedge rst) begin
+		if (rst == 1'b1)
+			state <= 'h0;
+		else
+			case (state)
+				'h0: state <= 'h1;
+				'h1: state <= 'h3;
+				'h3: state <= 'h2;
+				'h2: state <= 'h6;
+				'h6: state <= 'h7;
+				'h7: state <= 'h5;
+				'h5: state <= 'h4;
+				'h4: state <= 'hC;
+				'hC: state <= 'hD;
+				'hD: state <= 'hF;
+				'hF: state <= 'hE;
+				'hE: state <= 'hA;
+				'hA: state <= 'hB;
+				'hB: state <= 'h9;
+				'h9: state <= 'h8;
+				'h8: state <= 'h0;
+			endcase
+	end
+
+	assign gray_out = state;
+
+endmodule
+
